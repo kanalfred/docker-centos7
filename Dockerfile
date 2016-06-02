@@ -18,7 +18,7 @@ MAINTAINER Alfred Kan <kanalfred@gmail.com>
 ADD container-files/key/authorized_keys2 /root/.ssh/authorized_keys
 
 # root password
-RUN echo 'root:landmark5!' | chpasswd
+#RUN echo 'root:xxxxx' | chpasswd
 
 COPY container-files/conf/sshd.conf /etc/supervisor.d/sshd.conf
 COPY container-files/conf/supervisord.conf /etc/supervisord.conf
