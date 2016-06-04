@@ -22,6 +22,9 @@ ADD container-files/key/authorized_keys2 /root/.ssh/authorized_keys
 
 COPY container-files/conf/sshd.conf /etc/supervisor.d/sshd.conf
 COPY container-files/conf/supervisord.conf /etc/supervisord.conf
+COPY container-files/env.txt /root/env.txt
+
+RUN cat /root/env.txt | chpasswd
 
 # Repo
 RUN yum -y install epel-release && yum clean all
