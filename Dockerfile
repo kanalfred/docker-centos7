@@ -8,23 +8,21 @@
 # supervisord: https://hub.docker.com/r/jkuetemeier/docker-centos-supervisor-cron/~/dockerfile/
 # supervisord: https://gist.github.com/Mulkave/10559775
 # supervisord: https://github.com/million12/docker-centos-supervisor
-# docker run -centos7 --name centos7 -p 2201:22 -d kanalfred/centos7
+# docker run -h centos7 --name centos7 -p 2201:22 -d kanalfred/centos7
 ##############################
 
-FROM centos:centos7
+FROM centos:7
 MAINTAINER Alfred Kan <kanalfred@gmail.com>
 
+# Add Files
+ADD container-files / 
+
 # Add key for root user
-ADD container-files/key/authorized_keys2 /root/.ssh/authorized_keys
+#ADD container-files/key/authorized_keys2 /root/.ssh/authorized_keys
 
 # root password
 #RUN echo 'root:xxxxx' | chpasswd
-
-COPY container-files/conf/sshd.conf /etc/supervisor.d/sshd.conf
-COPY container-files/conf/supervisord.conf /etc/supervisord.conf
-COPY container-files/env.txt /root/env.txt
-
-RUN cat /root/env.txt | chpasswd
+RUN cat /root/root.txt | chpasswd
 
 # Repo
 RUN yum -y install epel-release && yum clean all
@@ -57,14 +55,11 @@ EXPOSE 22
 
 # Run supervisord as demon with option -n 
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
-# start all register services
-#CMD ["/sbin/init", "-D"]
 
 # Docker compose Env var 1.5 >
 #image: "postgres:${POSTGRES_VERSION}"
 
 # Run
-#docker run -h centos6 -e USER='alfred' -e PASSWD='xxxx' -P -d --name centos6 --restart=always kanalfred/centos6
 #docker run -h centos6 -p 2200:22 -d --name centos6 -v /home/alfred/docker/data/centos6:/home/alfred/doc kanalfred/centos6
 #docker run -h centos6 -p 192.168.3.129:22:22 -d --name centos6 -v /home/alfred/docker/data/centos6:/home/alfred/doc kanalfred/centos6
 
