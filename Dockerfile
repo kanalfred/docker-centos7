@@ -50,6 +50,9 @@ RUN sed -i "s/#UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/ss
 # Clean YUM caches to minimise Docker image size
 RUN yum clean all && rm -rf /tmp/yum*
 
+# Remove pass file
+RUN rm -f /root/root.txt 
+
 # EXPOSE
 EXPOSE 22
 
