@@ -17,6 +17,8 @@ MAINTAINER Alfred Kan <kanalfred@gmail.com>
 # Add Files
 ADD container-files / 
 
+ENV DOCKERIZE_VERSION v0.2.0
+
 # Add key for root user
 #ADD container-files/key/authorized_keys2 /root/.ssh/authorized_keys
 
@@ -35,17 +37,23 @@ RUN \
         cronie \
         wget \
         python-setuptools \
+        sendmail \
         net-tools && \
-        yum clean all
+        yum clean all && \
 
-# use easy install to get newer vesion of supervisor
-Run easy_install supervisor
+    # use easy install to get newer vesion of supervisor
+    easy_install supervisor && \
 
-# sshd
-RUN sshd-keygen
-RUN sed -i "s/#UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config && sed -i "s/UsePAM.*/UsePAM no/g" /etc/ssh/sshd_config
+    # sshd
+    sshd-keygen && \
+    sed -i "s/#UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config && sed -i "s/UsePAM.*/UsePAM no/g" /etc/ssh/sshd_config && \
 
-#RUN chmod 600 /etc/supervisord.conf /etc/supervisord.d/*.ini
+    #RUN chmod 600 /etc/supervisord.conf /etc/supervisord.d/*.ini
+
+    # Dockerize 
+    # Install dockerize - replace env var in config file
+    wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
 # Clean YUM caches to minimise Docker image size
 RUN yum clean all && rm -rf /tmp/yum*
@@ -57,7 +65,8 @@ RUN rm -f /root/root.txt
 EXPOSE 22
 
 # Run supervisord as demon with option -n 
-CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
+CMD dockerize /config/run.sh
+#CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
 
 # Docker compose Env var 1.5 >
 #image: "postgres:${POSTGRES_VERSION}"
