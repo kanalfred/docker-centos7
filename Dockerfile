@@ -70,6 +70,10 @@ RUN \
     sed -i "s/#UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config && \
     sed -i "s/UsePAM.*/UsePAM no/g" /etc/ssh/sshd_config && \
 
+    # Set timezone (Pacific Time Zone) Vancouver
+    rm -f /etc/localtime && \
+    ln -s /usr/share/zoneinfo/Canada/Pacific /etc/localtime && \
+
     #RUN chmod 600 /etc/supervisord.conf /etc/supervisord.d/*.ini
 
     # Dockerize 
