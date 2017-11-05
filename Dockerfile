@@ -53,6 +53,7 @@ RUN \
         passwd \
         cronie \
         wget \
+        perl \
         python-setuptools \
         sendmail \
         net-tools && \
