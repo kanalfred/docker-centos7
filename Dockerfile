@@ -54,6 +54,7 @@ RUN \
         cronie \
         wget \
         perl \
+        mysql \
         python-setuptools \
         sendmail \
         net-tools && \
