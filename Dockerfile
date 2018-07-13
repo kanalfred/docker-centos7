@@ -57,6 +57,7 @@ RUN \
         mysql \
         python-setuptools \
         sendmail \
+        certbot \
         net-tools && \
         yum clean all && \
 
