@@ -55,6 +55,8 @@ RUN \
         wget \
         perl \
         mysql \
+        rsync \
+        rsnapshot \
         python-setuptools \
         sendmail \
         certbot \
